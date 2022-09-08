@@ -6,9 +6,9 @@ import 'package:flutter_getx_todo/app/core/utils/extension.dart';
 import 'package:flutter_getx_todo/app/core/values/colors.dart';
 import 'package:flutter_getx_todo/app/data/models/task.dart';
 import 'package:flutter_getx_todo/app/modules/home/controller.dart';
-import 'package:flutter_getx_todo/app/widgets/add_card.dart';
-import 'package:flutter_getx_todo/app/widgets/add_dialog.dart';
-import 'package:flutter_getx_todo/app/widgets/task_card.dart';
+import 'package:flutter_getx_todo/app/modules/home/widgets/add_card.dart';
+import 'package:flutter_getx_todo/app/modules/home/widgets/add_dialog.dart';
+import 'package:flutter_getx_todo/app/modules/home/widgets/task_card.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
@@ -64,7 +64,13 @@ class HomePage extends GetView<HomeController> {
           return Obx(
             () => FloatingActionButton(
               backgroundColor: controller.deleting.value ? Colors.red : blue,
-              onPressed: () => Get.to(() => AddDialog(), transition: Transition.downToUp),
+              onPressed: () {
+                if (controller.tasks.isNotEmpty) {
+                  Get.to(() => AddDialog(), transition: Transition.downToUp);
+                } else {
+                  EasyLoading.showInfo('Please create your task type');
+                }
+              },
               child: Icon(controller.deleting.value ? Icons.delete : Icons.add),
             ),
           );
